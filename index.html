@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="TransNormal-2 estimates precise surface normals from a single image. Explore single-step rectified flow, geometry-aware supervision and interactive visual comparisons.">
+  <meta name="author" content="Mingwei Li, Yi Yang, Hehe Fan">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="TransNormal-2 | Precise Normal Estimation">
+  <meta property="og:description" content="Geometry-grounded rectified flow with edge-aware decoding. Explore interactive RGB, normal prediction and ground-truth comparisons.">
+  <meta property="og:url" content="https://longxiang-ai.github.io/TransNormal-2/">
+  <link rel="canonical" href="https://longxiang-ai.github.io/TransNormal-2/">
+  <title>TransNormal-2 | Precise Normal Estimation</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav-shell">
+  <nav class="nav" aria-label="Main navigation">
+    <a class="wordmark" href="#"><span class="brand-mark" aria-hidden="true"></span>TransNormal<span class="brand-two">2</span></a>
+    <div class="nav-links"><a href="#explore">Explore</a><a href="#method">Method</a><a href="#results">Results</a><a href="#citation">Cite</a></div>
+    <a class="nav-github" href="https://github.com/longxiang-ai/TransNormal-2">GitHub <span aria-hidden="true">↗</span></a>
+  </nav>
+</header>
+<main id="main">
+  <section class="hero wrap">
+    <div class="eyebrow"><span class="status-dot" aria-hidden="true"></span> MONOCULAR SURFACE NORMAL ESTIMATION <span class="year">2026</span></div>
+    <h1>TransNormal<span class="title-two">-2</span></h1>
+    <p class="paper-title">Geometry-Grounded Rectified Flow with Edge-Aware<br class="desktop-br"> Decoding for Precise Normal Estimation</p>
+    <div class="authors">
+      <a href="https://longxiang-ai.github.io/">Mingwei Li<sup>1,2</sup></a>
+      <a href="https://scholar.google.com/citations?user=RMSuNFwAAAAJ">Yi Yang<sup>1</sup><span class="membership">Fellow, IEEE</span></a>
+      <a href="https://hehefan.github.io/">Hehe Fan<sup>1,†</sup><span class="membership">Senior Member, IEEE</span></a>
+    </div>
+    <p class="affiliations"><sup>1</sup> College of Artificial Intelligence, Zhejiang University <span class="affiliation-break"><sup>2</sup> Zhongguancun Academy</span></p>
+    <p class="corresponding"><sup>†</sup> Corresponding author</p>
+    <div class="hero-actions"><a class="button primary" href="#explore">Explore the results <span aria-hidden="true">↓</span></a><a class="button secondary" href="https://github.com/longxiang-ai/TransNormal-2">Project repository <span aria-hidden="true">↗</span></a><span class="paper-status">arXiv paper forthcoming</span></div>
+  </section>
+
+  <section class="explorer wrap" id="explore" aria-labelledby="explore-title">
+    <div class="section-top"><div><p class="section-kicker">SEE THE GEOMETRY</p><h2 id="explore-title">One image. A different perspective.</h2></div><span class="drag-note"><span aria-hidden="true">↔</span> Drag to compare</span></div>
+    <div class="viewer-shell">
+      <div class="viewer-toolbar"><div><span class="sample-number" id="sample-number">01 / 06</span><strong id="sample-title">Double-walled glass</strong><span class="sample-type" id="sample-type">In the wild</span></div><div class="mode-switch" role="group" aria-label="Comparison mode"><button type="button" class="active" id="rgb-mode" aria-pressed="true">RGB / Normals</button><button type="button" id="gt-mode" aria-pressed="false" disabled title="Ground truth is available for benchmark samples">GT / Normals</button></div></div>
+      <div class="compare" id="compare" style="--split:50%;--ratio:1000 / 744">
+        <img id="comparison-base" src="assets/glass-normal.png" alt="TransNormal-2 predicted surface normals for double-walled glass" width="1000" height="744" fetchpriority="high">
+        <div class="compare-overlay"><img id="comparison-overlay" src="assets/glass-rgb.png" alt="Input RGB photograph of double-walled glass" width="1000" height="744" fetchpriority="high"></div>
+        <span class="image-label label-left" id="left-label">INPUT RGB</span><span class="image-label label-right">TRANSNORMAL-2</span>
+        <span class="compare-divider" aria-hidden="true"><span>‹<i></i>›</span></span>
+        <input id="comparison-slider" type="range" min="0" max="100" value="50" aria-label="Image comparison position" aria-valuetext="50 percent input RGB, 50 percent predicted normals">
+      </div>
+      <div class="viewer-caption"><p id="sample-description">Transparent surfaces, recovered from a single RGB image.</p><div class="viewer-arrows"><button type="button" id="previous-sample" aria-label="Previous sample">←</button><button type="button" id="next-sample" aria-label="Next sample">→</button></div></div>
+    </div>
+    <div class="sample-strip" role="group" aria-label="Choose a visual example">
+      <button type="button" data-sample="glass" class="sample active" aria-pressed="true"><img src="assets/glass-rgb.png" alt="" width="1000" height="744"><span>Glass</span></button>
+      <button type="button" data-sample="prism" class="sample" aria-pressed="false"><img src="assets/prism-rgb.png" alt="" width="1400" height="950" loading="lazy"><span>Prism</span></button>
+      <button type="button" data-sample="watch" class="sample" aria-pressed="false"><img src="assets/watch-rgb.png" alt="" width="1024" height="768" loading="lazy"><span>Mechanics</span></button>
+      <button type="button" data-sample="porcelain" class="sample" aria-pressed="false"><img src="assets/porcelain-rgb.png" alt="" width="1024" height="768" loading="lazy"><span>Porcelain</span></button>
+      <button type="button" data-sample="cleargrasp" class="sample" aria-pressed="false"><img src="assets/cleargrasp-rgb.png" alt="" width="1024" height="576" loading="lazy"><span>ClearGrasp <b>GT</b></span></button>
+      <button type="button" data-sample="tn-syn" class="sample" aria-pressed="false"><img src="assets/tn-syn-rgb.png" alt="" width="800" height="800" loading="lazy"><span>TN-Syn <b>GT</b></span></button>
+    </div>
+    <p class="gallery-note">Visual results from the manuscript. Ground-truth comparison is available for the two benchmark examples.</p>
+    <p class="sr-only" id="viewer-announcement" aria-live="polite"></p>
+  </section>
+
+  <section class="facts wrap" aria-label="Research highlights">
+    <div><span class="fact-value">1<span> step</span></span><p>Deterministic rectified-flow inference</p></div>
+    <div><span class="fact-value">7</span><p>General and transparent-object benchmarks</p></div>
+    <div><span class="fact-value">122<span>K</span></span><p>Task-specific training samples</p></div>
+    <div><span class="fact-value">4.2<span>° ↓</span></span><p>ClearGrasp MAE vs. strongest prior baseline</p></div>
+  </section>
+
+  <section class="method-section" id="method">
+    <div class="wrap">
+      <div class="section-heading"><p class="section-kicker">THE IDEA</p><h2>Precision on both sides<br>of the VAE decoder.</h2><p>Latent predictions can look right until they are decoded. TransNormal-2 addresses the geometry lost through VAE reconstruction, during training and at inference.</p></div>
+      <div class="method-grid">
+        <article class="method-card"><span class="step-label">01 / DURING TRAINING</span><h3>Supervise the geometry.</h3><p>Pixel-space objectives complement latent MSE with angular geometry, wavelet edges, and inverse-rendering self-consistency after VAE decoding.</p><div class="loss-tags"><span>Angular</span><span>Wavelet</span><span>Rendering</span></div></article>
+        <article class="method-card refinement-card"><span class="step-label">02 / AT INFERENCE</span><h3>Recover the details.</h3><p>A lightweight Geometric Refinement Module uses RGB guidance to correct boundary-localized errors in decoded normals.</p><div class="loss-tags"><span>RGB guidance</span><span>Residual correction</span></div></article>
+      </div>
+      <figure class="pipeline"><img src="assets/pipeline.png" alt="TransNormal-2 pipeline showing RGB encoding, single-step latent prediction, VAE decoding and geometric refinement" loading="lazy"><figcaption>FLUX.2-based rectified flow with geometry-aware supervision and post-decode correction.</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="results wrap" id="results">
+    <div class="section-heading"><p class="section-kicker">QUANTITATIVE RESULTS</p><h2>Across scenes. Through glass.</h2><p>Strong general-scene performance, with the clearest gains on transparent objects.</p></div>
+    <div class="results-tabs" role="tablist" aria-label="Benchmark group"><button type="button" role="tab" id="transparent-tab" aria-selected="true" aria-controls="transparent-panel" class="active">Transparent objects</button><button type="button" role="tab" id="general-tab" aria-selected="false" aria-controls="general-panel" tabindex="-1">General scenes</button></div>
+    <div id="transparent-panel" role="tabpanel" aria-labelledby="transparent-tab">
+      <div class="table-frame"><table><caption>Selected methods from the manuscript. Mean angular error in degrees; lower is better.</caption><thead><tr><th scope="col">Method</th><th scope="col">ClearGrasp <small>Synthetic</small></th><th scope="col">TN-Syn <small>Synthetic</small></th><th scope="col">ClearPose <small>Real-world</small></th></tr></thead><tbody><tr><th scope="row">MoGe-2</th><td>26.6</td><td>6.2</td><td>36.2</td></tr><tr><th scope="row">FE2E</th><td>16.9</td><td>21.2</td><td>22.2</td></tr><tr><th scope="row">Lotus-2</th><td>15.5</td><td>5.5</td><td>23.4</td></tr><tr><th scope="row">TransNormal</th><td>16.1</td><td>3.9</td><td>25.5</td></tr><tr class="ours"><th scope="row">TransNormal-2 <span>Ours</span></th><td>11.3</td><td>3.6</td><td>19.1</td></tr></tbody></table></div>
+      <p class="result-note">MAE improvements over the strongest prior baselines: <strong>4.2° on ClearGrasp</strong> and <strong>3.1° on ClearPose</strong>. Full comparisons and evaluation protocols are reported in the paper.</p>
+    </div>
+    <div id="general-panel" role="tabpanel" aria-labelledby="general-tab" hidden>
+      <div class="table-frame"><table><caption>Selected methods from the manuscript. Mean angular error in degrees; lower is better.</caption><thead><tr><th scope="col">Method</th><th scope="col">NYUv2</th><th scope="col">ScanNet</th><th scope="col">iBims</th><th scope="col">Sintel</th></tr></thead><tbody><tr><th scope="row">DSINE</th><td>16.4</td><td>16.2</td><td>17.1</td><td>34.9</td></tr><tr><th scope="row">FE2E</th><td>16.3</td><td>13.8</td><td>15.1</td><td>31.2</td></tr><tr><th scope="row">Lotus-2</th><td>16.9</td><td>14.2</td><td>15.4</td><td>30.3</td></tr><tr><th scope="row">MoGe-2</th><td>14.7</td><td>12.8</td><td>14.7</td><td>29.3</td></tr><tr class="ours"><th scope="row">TransNormal-2 <span>Ours</span></th><td>14.7</td><td>12.7</td><td>14.7</td><td>29.2</td></tr></tbody></table></div>
+      <p class="result-note">TransNormal-2 matches or exceeds MoGe-2 on all eight reported metrics using <strong>1.4% as many task-specific normal annotations</strong>. This table shows the four MAE metrics.</p>
+    </div>
+  </section>
+
+  <section class="release-section wrap" id="release"><div><p class="section-kicker">FOLLOW THE PROJECT</p><h2>More is on the way.</h2><p>The project overview and visual results are available now. Inference code, model weights, and training code will be released progressively.</p><a class="button primary" href="https://github.com/longxiang-ai/TransNormal-2">Follow on GitHub <span aria-hidden="true">↗</span></a></div><div class="release-list"><div><span>Project page & visual results</span><b class="available">Available</b></div><div><span>arXiv paper</span><b>Forthcoming</b></div><div><span>Inference code</span><b>Planned</b></div><div><span>Model weights</span><b>Planned</b></div><div><span>Training code</span><b>Planned</b></div></div></section>
+
+  <section class="citation wrap" id="citation"><div class="citation-heading"><div><p class="section-kicker">REFERENCE</p><h2>Cite this work.</h2></div><button type="button" class="copy-button" id="copy-citation">Copy BibTeX <span aria-hidden="true">⧉</span></button></div><p class="citation-note">The arXiv identifier will be added when the preprint is available.</p><pre><code id="bibtex">@misc{li2026transnormal2,
+  title  = {TransNormal-2: Geometry-Grounded Rectified Flow with Edge-Aware Decoding for Precise Normal Estimation},
+  author = {Li, Mingwei and Yang, Yi and Fan, Hehe},
+  year   = {2026},
+  url    = {https://longxiang-ai.github.io/TransNormal-2/}
+}</code></pre><span class="sr-only" id="copy-status" role="status"></span></section>
+</main>
+<footer class="wrap"><div><a class="wordmark" href="#">TransNormal<span class="brand-two">2</span></a><p>Mingwei Li · Yi Yang · Hehe Fan</p></div><div class="footer-links"><a href="https://github.com/longxiang-ai/TransNormal">Prior work: TransNormal ↗</a><a href="mailto:hehefan@zju.edu.cn">Contact ↗</a><span>© 2026 The authors</span></div></footer>
+</body>
+</html>

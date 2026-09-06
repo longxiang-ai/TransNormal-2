@@ -13,8 +13,8 @@
   <link rel="canonical" href="https://longxiang-ai.github.io/TransNormal-2/">
   <title>TransNormal-2 | Precise Normal Estimation</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css">
-  <script src="app.js" defer></script>
+  <link rel="stylesheet" href="style.css?rev=916850bad9c3">
+  <script src="app.js?rev=d5c9b7d57101" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -43,12 +43,12 @@
     <div class="section-top"><div><p class="section-kicker">SEE THE GEOMETRY</p><h2 id="explore-title">One image. A different perspective.</h2></div><span class="drag-note"><span aria-hidden="true">↔</span> Drag to compare</span></div>
     <div class="viewer-shell">
       <div class="viewer-toolbar">
-        <div class="sample-context"><div class="input-preview"><img id="input-preview" src="assets/glass-rgb.png" alt="Input RGB: double-walled glass" width="1000" height="744"><span>INPUT RGB</span></div><div class="sample-heading"><span class="sample-number" id="sample-number">01 / 06</span><strong id="sample-title">Double-walled glass</strong><span class="sample-type" id="sample-type">In the wild</span></div></div>
+        <div class="sample-context"><div class="input-preview"><img id="input-preview" src="assets/glass-rgb.png?rev=573e10929158" alt="Input RGB: double-walled glass" width="1000" height="744"><span>INPUT RGB</span></div><div class="sample-heading"><span class="sample-number" id="sample-number">01 / 06</span><strong id="sample-title">Double-walled glass</strong><span class="sample-type" id="sample-type">In the wild</span></div></div>
         <div class="reference-picker"><label for="comparison-method">Compare with</label><select id="comparison-method"><option value="moge-2">MoGe-2</option><option value="lotus-2">Lotus-2</option><option value="transnormal">TransNormal</option><option value="e2e-ft">E2E-FT</option><option value="rgb">Input RGB</option></select><span>vs. <b>TransNormal-2</b></span></div>
       </div>
       <div class="compare" id="compare" style="--split:50%;--ratio:1000 / 744">
-        <img id="comparison-base" src="assets/glass-normal.png" alt="TransNormal-2 predicted surface normals for double-walled glass" width="1000" height="744" fetchpriority="high">
-        <div class="compare-overlay"><img id="comparison-overlay" src="assets/glass-moge-2.png" alt="MoGe-2 predicted surface normals for double-walled glass" width="1000" height="744" fetchpriority="high"></div>
+        <img id="comparison-base" src="assets/glass-normal.png?rev=573e10929158" alt="TransNormal-2 predicted surface normals for double-walled glass" width="1000" height="744" fetchpriority="high">
+        <div class="compare-overlay"><img id="comparison-overlay" src="assets/glass-moge-2.png?rev=573e10929158" alt="MoGe-2 predicted surface normals for double-walled glass" width="1000" height="744" fetchpriority="high"></div>
         <span class="image-label label-left" id="left-label">MoGe-2</span><span class="image-label label-right">TRANSNORMAL-2</span>
         <span class="compare-divider" aria-hidden="true"><span>‹<i></i>›</span></span>
         <input id="comparison-slider" type="range" min="0" max="100" value="50" aria-label="Image comparison position" aria-valuetext="50 percent MoGe-2, 50 percent TransNormal-2">
@@ -57,12 +57,12 @@
       <div class="viewer-caption"><p id="sample-description">Transparent surfaces, recovered from a single RGB image.</p><div class="viewer-arrows"><button type="button" id="previous-sample" aria-label="Previous sample">←</button><button type="button" id="next-sample" aria-label="Next sample">→</button></div></div>
     </div>
     <div class="sample-strip" role="group" aria-label="Choose a visual example">
-      <button type="button" data-sample="glass" class="sample active" aria-pressed="true"><img src="assets/glass-rgb.png" alt="" width="1000" height="744"><span>Glass</span></button>
-      <button type="button" data-sample="prism" class="sample" aria-pressed="false"><img src="assets/prism-rgb.png" alt="" width="1400" height="950" loading="lazy"><span>Prism</span></button>
-      <button type="button" data-sample="watch" class="sample" aria-pressed="false"><img src="assets/watch-rgb.png" alt="" width="1024" height="768" loading="lazy"><span>Mechanics</span></button>
-      <button type="button" data-sample="porcelain" class="sample" aria-pressed="false"><img src="assets/porcelain-rgb.png" alt="" width="1024" height="768" loading="lazy"><span>Porcelain</span></button>
-      <button type="button" data-sample="cleargrasp" class="sample" aria-pressed="false"><img src="assets/cleargrasp-rgb.png" alt="" width="1024" height="576" loading="lazy"><span>ClearGrasp <b>GT</b></span></button>
-      <button type="button" data-sample="tn-syn" class="sample" aria-pressed="false"><img src="assets/tn-syn-rgb.png" alt="" width="800" height="800" loading="lazy"><span>TN-Syn <b>GT</b></span></button>
+      <button type="button" data-sample="glass" class="sample active" aria-pressed="true"><img src="assets/glass-rgb.png?rev=573e10929158" alt="" width="1000" height="744"><span>Glass</span></button>
+      <button type="button" data-sample="prism" class="sample" aria-pressed="false"><img src="assets/prism-rgb.png?rev=573e10929158" alt="" width="1400" height="950" loading="lazy"><span>Prism</span></button>
+      <button type="button" data-sample="watch" class="sample" aria-pressed="false"><img src="assets/watch-rgb.png?rev=573e10929158" alt="" width="1024" height="768" loading="lazy"><span>Mechanics</span></button>
+      <button type="button" data-sample="porcelain" class="sample" aria-pressed="false"><img src="assets/porcelain-rgb.png?rev=573e10929158" alt="" width="1024" height="768" loading="lazy"><span>Porcelain</span></button>
+      <button type="button" data-sample="cleargrasp" class="sample" aria-pressed="false"><img src="assets/cleargrasp-rgb.png?rev=573e10929158" alt="" width="1024" height="576" loading="lazy"><span>ClearGrasp <b>GT</b></span></button>
+      <button type="button" data-sample="tn-syn" class="sample" aria-pressed="false"><img src="assets/tn-syn-rgb.png?rev=573e10929158" alt="" width="800" height="800" loading="lazy"><span>TN-Syn <b>GT</b></span></button>
     </div>
     <p class="gallery-note">Selected qualitative examples from the manuscript and supplementary material. Choose a baseline, input RGB, or available ground truth; TransNormal-2 stays on the right.</p>
     <p class="sr-only" id="viewer-announcement" aria-live="polite"></p>
@@ -79,7 +79,7 @@
     <div class="wrap">
       <div class="section-heading"><p class="section-kicker">METHOD OVERVIEW</p><h2>A unified approach<br>to precise normals.</h2><p>TransNormal-2 combines single-step rectified flow, geometry-aware supervision, and RGB-guided geometric refinement to address VAE reconstruction degradation.</p></div>
       <div class="method-summary"><p>Angular geometry, wavelet edges, and inverse-rendering self-consistency complement latent MSE with supervision in pixel space. Latent correction and the lightweight <strong>Geometric Refinement Module (GRM)</strong> work with the predictor to improve decoded normals and recover boundary detail.</p><div class="method-principles"><span>Single-step prediction</span><span>Geometry-aware objectives</span><span>RGB-guided refinement</span></div></div>
-      <figure class="pipeline"><img src="assets/pipeline.png" alt="TransNormal-2 pipeline showing RGB encoding, single-step latent prediction, VAE decoding and geometric refinement" loading="lazy"><figcaption>FLUX.2-based rectified flow with geometry-aware supervision and post-decode correction.</figcaption></figure>
+      <figure class="pipeline"><img src="assets/pipeline.png?rev=573e10929158" alt="TransNormal-2 pipeline showing RGB encoding, single-step latent prediction, VAE decoding and geometric refinement" loading="lazy"><figcaption>FLUX.2-based rectified flow with geometry-aware supervision and post-decode correction.</figcaption></figure>
     </div>
   </section>
 

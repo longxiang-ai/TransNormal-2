@@ -1,4 +1,6 @@
 'use strict';
+const assetRevision = '573e10929158';
+const assetUrl = file => `assets/${file}?rev=${assetRevision}`;
 const samples = [
   {id:'glass', title:'Double-walled glass', type:'In the wild', ratio:'1000 / 744', description:'Transparent surfaces and fine rims, seen by different normal estimators.', methods:['moge-2','lotus-2','transnormal','e2e-ft','marigold','geowizard']},
   {id:'prism', title:'Prism under extreme lighting', type:'In the wild', ratio:'1400 / 950', description:'Compare recovered geometry under strong refraction and lighting changes.', methods:['moge-2','lotus-2','transnormal','e2e-ft','marigold','geowizard']},
@@ -44,7 +46,7 @@ async function showComparison() {
   status.textContent = 'Loading comparison…'; status.hidden = false; viewer.setAttribute('aria-busy', 'true');
   try {
     const [normal, reference, rgb] = await Promise.all([
-      loadImage(`assets/${sample.id}-normal.png`), loadImage(`assets/${sample.id}-${method}.png`), loadImage(`assets/${sample.id}-rgb.png`)
+      loadImage(assetUrl(`${sample.id}-normal.png`)), loadImage(assetUrl(`${sample.id}-${method}.png`)), loadImage(assetUrl(`${sample.id}-rgb.png`))
     ]);
     if (request !== loadRequest) return;
     viewer.style.setProperty('--ratio', sample.ratio);

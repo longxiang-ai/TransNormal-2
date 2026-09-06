@@ -32,24 +32,27 @@
     <p class="paper-title">Geometry-Grounded Rectified Flow with Edge-Aware<br class="desktop-br"> Decoding for Precise Normal Estimation</p>
     <div class="authors">
       <a href="https://longxiang-ai.github.io/">Mingwei Li<sup>1,2</sup></a>
-      <a href="https://scholar.google.com/citations?user=RMSuNFwAAAAJ">Yi Yang<sup>1</sup><span class="membership">Fellow, IEEE</span></a>
-      <a href="https://hehefan.github.io/">Hehe Fan<sup>1,†</sup><span class="membership">Senior Member, IEEE</span></a>
+      <a href="https://scholar.google.com/citations?user=RMSuNFwAAAAJ">Yi Yang<sup>1</sup></a>
+      <a href="https://hehefan.github.io/">Hehe Fan<sup>1</sup></a>
     </div>
     <p class="affiliations"><sup>1</sup> College of Artificial Intelligence, Zhejiang University <span class="affiliation-break"><sup>2</sup> Zhongguancun Academy</span></p>
-    <p class="corresponding"><sup>†</sup> Corresponding author</p>
     <div class="hero-actions"><a class="button primary" href="#explore">Explore the results <span aria-hidden="true">↓</span></a><a class="button secondary" href="https://github.com/longxiang-ai/TransNormal-2">Project repository <span aria-hidden="true">↗</span></a><span class="paper-status">arXiv paper forthcoming</span></div>
   </section>
 
   <section class="explorer wrap" id="explore" aria-labelledby="explore-title">
     <div class="section-top"><div><p class="section-kicker">SEE THE GEOMETRY</p><h2 id="explore-title">One image. A different perspective.</h2></div><span class="drag-note"><span aria-hidden="true">↔</span> Drag to compare</span></div>
     <div class="viewer-shell">
-      <div class="viewer-toolbar"><div><span class="sample-number" id="sample-number">01 / 06</span><strong id="sample-title">Double-walled glass</strong><span class="sample-type" id="sample-type">In the wild</span></div><div class="mode-switch" role="group" aria-label="Comparison mode"><button type="button" class="active" id="rgb-mode" aria-pressed="true">RGB / Normals</button><button type="button" id="gt-mode" aria-pressed="false" disabled title="Ground truth is available for benchmark samples">GT / Normals</button></div></div>
+      <div class="viewer-toolbar">
+        <div class="sample-context"><div class="input-preview"><img id="input-preview" src="assets/glass-rgb.png" alt="Input RGB: double-walled glass" width="1000" height="744"><span>INPUT RGB</span></div><div class="sample-heading"><span class="sample-number" id="sample-number">01 / 06</span><strong id="sample-title">Double-walled glass</strong><span class="sample-type" id="sample-type">In the wild</span></div></div>
+        <div class="reference-picker"><label for="comparison-method">Compare with</label><select id="comparison-method"><option value="moge-2">MoGe-2</option><option value="lotus-2">Lotus-2</option><option value="transnormal">TransNormal</option><option value="e2e-ft">E2E-FT</option><option value="rgb">Input RGB</option></select><span>vs. <b>TransNormal-2</b></span></div>
+      </div>
       <div class="compare" id="compare" style="--split:50%;--ratio:1000 / 744">
         <img id="comparison-base" src="assets/glass-normal.png" alt="TransNormal-2 predicted surface normals for double-walled glass" width="1000" height="744" fetchpriority="high">
-        <div class="compare-overlay"><img id="comparison-overlay" src="assets/glass-rgb.png" alt="Input RGB photograph of double-walled glass" width="1000" height="744" fetchpriority="high"></div>
-        <span class="image-label label-left" id="left-label">INPUT RGB</span><span class="image-label label-right">TRANSNORMAL-2</span>
+        <div class="compare-overlay"><img id="comparison-overlay" src="assets/glass-moge-2.png" alt="MoGe-2 predicted surface normals for double-walled glass" width="1000" height="744" fetchpriority="high"></div>
+        <span class="image-label label-left" id="left-label">MoGe-2</span><span class="image-label label-right">TRANSNORMAL-2</span>
         <span class="compare-divider" aria-hidden="true"><span>‹<i></i>›</span></span>
-        <input id="comparison-slider" type="range" min="0" max="100" value="50" aria-label="Image comparison position" aria-valuetext="50 percent input RGB, 50 percent predicted normals">
+        <input id="comparison-slider" type="range" min="0" max="100" value="50" aria-label="Image comparison position" aria-valuetext="50 percent MoGe-2, 50 percent TransNormal-2">
+        <span class="comparison-status" id="comparison-status" role="status" hidden>Loading comparison…</span>
       </div>
       <div class="viewer-caption"><p id="sample-description">Transparent surfaces, recovered from a single RGB image.</p><div class="viewer-arrows"><button type="button" id="previous-sample" aria-label="Previous sample">←</button><button type="button" id="next-sample" aria-label="Next sample">→</button></div></div>
     </div>
@@ -61,7 +64,7 @@
       <button type="button" data-sample="cleargrasp" class="sample" aria-pressed="false"><img src="assets/cleargrasp-rgb.png" alt="" width="1024" height="576" loading="lazy"><span>ClearGrasp <b>GT</b></span></button>
       <button type="button" data-sample="tn-syn" class="sample" aria-pressed="false"><img src="assets/tn-syn-rgb.png" alt="" width="800" height="800" loading="lazy"><span>TN-Syn <b>GT</b></span></button>
     </div>
-    <p class="gallery-note">Visual results from the manuscript. Ground-truth comparison is available for the two benchmark examples.</p>
+    <p class="gallery-note">Selected qualitative examples from the manuscript and supplementary material. Choose a baseline, input RGB, or available ground truth; TransNormal-2 stays on the right.</p>
     <p class="sr-only" id="viewer-announcement" aria-live="polite"></p>
   </section>
 
@@ -74,11 +77,8 @@
 
   <section class="method-section" id="method">
     <div class="wrap">
-      <div class="section-heading"><p class="section-kicker">THE IDEA</p><h2>Precision on both sides<br>of the VAE decoder.</h2><p>Latent predictions can look right until they are decoded. TransNormal-2 addresses the geometry lost through VAE reconstruction, during training and at inference.</p></div>
-      <div class="method-grid">
-        <article class="method-card"><span class="step-label">01 / DURING TRAINING</span><h3>Supervise the geometry.</h3><p>Pixel-space objectives complement latent MSE with angular geometry, wavelet edges, and inverse-rendering self-consistency after VAE decoding.</p><div class="loss-tags"><span>Angular</span><span>Wavelet</span><span>Rendering</span></div></article>
-        <article class="method-card refinement-card"><span class="step-label">02 / AT INFERENCE</span><h3>Recover the details.</h3><p>A lightweight Geometric Refinement Module uses RGB guidance to correct boundary-localized errors in decoded normals.</p><div class="loss-tags"><span>RGB guidance</span><span>Residual correction</span></div></article>
-      </div>
+      <div class="section-heading"><p class="section-kicker">METHOD OVERVIEW</p><h2>A unified approach<br>to precise normals.</h2><p>TransNormal-2 combines single-step rectified flow, geometry-aware supervision, and RGB-guided geometric refinement to address VAE reconstruction degradation.</p></div>
+      <div class="method-summary"><p>Angular geometry, wavelet edges, and inverse-rendering self-consistency complement latent MSE with supervision in pixel space. Latent correction and the lightweight <strong>Geometric Refinement Module (GRM)</strong> work with the predictor to improve decoded normals and recover boundary detail.</p><div class="method-principles"><span>Single-step prediction</span><span>Geometry-aware objectives</span><span>RGB-guided refinement</span></div></div>
       <figure class="pipeline"><img src="assets/pipeline.png" alt="TransNormal-2 pipeline showing RGB encoding, single-step latent prediction, VAE decoding and geometric refinement" loading="lazy"><figcaption>FLUX.2-based rectified flow with geometry-aware supervision and post-decode correction.</figcaption></figure>
     </div>
   </section>
@@ -105,6 +105,6 @@
   url    = {https://longxiang-ai.github.io/TransNormal-2/}
 }</code></pre><span class="sr-only" id="copy-status" role="status"></span></section>
 </main>
-<footer class="wrap"><div><a class="wordmark" href="#">TransNormal<span class="brand-two">2</span></a><p>Mingwei Li · Yi Yang · Hehe Fan</p></div><div class="footer-links"><a href="https://github.com/longxiang-ai/TransNormal">Prior work: TransNormal ↗</a><a href="mailto:hehefan@zju.edu.cn">Contact ↗</a><span>© 2026 The authors</span></div></footer>
+<footer class="wrap"><div><a class="wordmark" href="#">TransNormal<span class="brand-two">2</span></a><p>Mingwei Li · Yi Yang · Hehe Fan</p></div><div class="footer-links"><a href="https://github.com/longxiang-ai/TransNormal">Prior work: TransNormal ↗</a><a href="https://github.com/longxiang-ai">Contact longxiang-ai ↗</a><span>© 2026 The authors</span></div></footer>
 </body>
 </html>

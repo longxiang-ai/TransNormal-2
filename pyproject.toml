@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "transnormal2"
+version = "1.0.0"
+description = "TransNormal-2: one-step rectified-flow surface normal estimation with edge-aware decoding"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Mingwei Li" },
+  { name = "Yi Yang" },
+  { name = "Hehe Fan" },
+]
+keywords = [
+  "surface-normal-estimation",
+  "monocular-geometry",
+  "computer-vision",
+  "diffusion-transformer",
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "License :: Other/Proprietary License",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dynamic = ["dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[project.urls]
+Homepage = "https://longxiang-ai.github.io/TransNormal-2"
+Repository = "https://github.com/longxiang-ai/TransNormal-2"
+Weights = "https://huggingface.co/Longxiang-ai/TransNormal-2"
+Paper = "https://arxiv.org/abs/2609.06665"
+
+[tool.setuptools.packages.find]
+include = ["transnormal2*"]
+
+[tool.setuptools]
+license-files = ["LICENSE", "NOTICE", "licenses/*"]

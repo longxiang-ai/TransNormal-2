@@ -1,0 +1,12 @@
+TransNormal-2 Code License
+
+Copyright (c) 2026 TransNormal-2 Authors
+
+The original TransNormal-2 inference code and accompanying original documentation
+are licensed under Creative Commons Attribution-NonCommercial 4.0 International
+(CC BY-NC 4.0). The full license text is in licenses/CC-BY-NC-4.0.txt.
+
+Third-party software remains under its respective license. The model weights
+are distributed separately on Hugging Face and are additionally subject to the
+FLUX Non-Commercial License v2.1. This code license does not grant rights to the
+FLUX base model or override the licenses of third-party dependencies. See NOTICE.

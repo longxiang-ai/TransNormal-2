@@ -1,0 +1,19 @@
+TransNormal-2
+Copyright (c) 2026 TransNormal-2 Authors
+
+This repository provides the TransNormal-2 inference pipeline, Local Continuity
+Module (LCM), and Geometric Refinement Module (GRM). It uses the public Diffusers,
+Transformers, PEFT, Accelerate, PyTorch, and Hugging Face Hub libraries, which
+retain their own licenses. The full-RGB guided filter follows He et al.,
+Guided Image Filtering (ECCV 2010).
+
+The model weights are a modified derivative of FLUX.2 [klein] base 9B,
+developed by Black Forest Labs Inc. TransNormal-2 adds task-specific LoRA
+adapters, LCM, and GRM. Neither the base model nor task weights are bundled
+with this code. Model weights and their terms are available at:
+https://huggingface.co/Longxiang-ai/TransNormal-2
+
+This FLUX Model is licensed by Black Forest Labs Inc. under the FLUX Non-Commercial License. Copyright Black Forest Labs Inc. IN NO EVENT SHALL BLACK FOREST LABS INC. BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH USE OF THIS MODEL.
+
+The full upstream license is reproduced in licenses/FLUX-NON-COMMERCIAL.md.
+This project is not endorsed by Black Forest Labs.

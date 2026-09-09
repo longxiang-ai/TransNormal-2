@@ -1,9 +1,10 @@
 # TransNormal-2: Geometry-Grounded Rectified Flow with Edge-Aware Decoding for Precise Normal Estimation
 
+[![Hugging Face](https://img.shields.io/badge/Hugging_Face-Model_Weights-FFD21E)](https://huggingface.co/Longxiang-ai/TransNormal-2)
 [![Project Page](https://img.shields.io/badge/Project-Page-7057d9)](https://longxiang-ai.github.io/TransNormal-2/)
 [![Interactive Comparisons](https://img.shields.io/badge/Explore-Comparisons-3988de)](https://longxiang-ai.github.io/TransNormal-2/#explore)
-![arXiv forthcoming](https://img.shields.io/badge/arXiv-forthcoming-b31b1b)
-![Code release planned](https://img.shields.io/badge/Code-release_planned-778192)
+[![arXiv](https://img.shields.io/badge/arXiv-2609.06665-b31b1b)](https://arxiv.org/abs/2609.06665)
+[![Inference](https://img.shields.io/badge/Code-Inference_Available-2d9d78)](#inference)
 
 Official implementation of **TransNormal-2: Geometry-Grounded Rectified Flow with Edge-Aware Decoding for Precise Normal Estimation**.
 
@@ -11,7 +12,7 @@ Official implementation of **TransNormal-2: Geometry-Grounded Rectified Flow wit
 
 *<sup>1</sup>College of Artificial Intelligence, Zhejiang University · <sup>2</sup>Zhongguancun Academy*
 
-**[Project Page](https://longxiang-ai.github.io/TransNormal-2/) · [Visual Comparisons](https://longxiang-ai.github.io/TransNormal-2/#explore) · [Results](#quantitative-results) · [Citation](#citation)**
+**[GitHub](https://github.com/longxiang-ai/TransNormal-2) · [Hugging Face](https://huggingface.co/Longxiang-ai/TransNormal-2) · [arXiv](https://arxiv.org/abs/2609.06665) · [Project Page](https://longxiang-ai.github.io/TransNormal-2/) · [Visual Comparisons](https://longxiang-ai.github.io/TransNormal-2/#explore) · [Results](#quantitative-results) · [Citation](#citation)**
 
 ## TL;DR
 
@@ -22,18 +23,109 @@ Official implementation of **TransNormal-2: Geometry-Grounded Rectified Flow wit
 
 ## News
 
+- **[2026-09-09]** Inference code is available, including single-image prediction, folder processing, and CPU offload.
+
+- **[2026-09-09]** [Model weights](https://huggingface.co/Longxiang-ai/TransNormal-2) are available on Hugging Face, with configuration, download instructions, and license information.
+
+- **[2026-09-09]** The [arXiv preprint](https://arxiv.org/abs/2609.06665) is available.
+
 - **[2026-09-06]** Project page and interactive comparisons are online. Explore RGB images, multiple baselines, our predictions, and available ground truth.
 
 ## Release Roadmap
 
 - [x] Project overview and visual results.
 - [x] Interactive comparisons with baseline methods.
-- [ ] arXiv preprint.
-- [ ] Inference code.
-- [ ] Model weights.
+- [x] [arXiv preprint](https://arxiv.org/abs/2609.06665).
+- [x] [Inference code](#inference).
+- [x] [Model weights](https://huggingface.co/Longxiang-ai/TransNormal-2).
 - [ ] Training code.
 
-This initial release contains the project documentation and visual results. Code and model weights will be released progressively; installation and inference instructions will accompany the code release.
+The project documentation, visual results, [arXiv preprint](https://arxiv.org/abs/2609.06665), and [model weights](https://huggingface.co/Longxiang-ai/TransNormal-2) are available. Inference code is available below; training code will follow in a later release.
+
+## Model Weights
+
+Download the BF16 Safetensors weights and loading configuration from **[Hugging Face](https://huggingface.co/Longxiang-ai/TransNormal-2#download-and-use)**. The model card provides download instructions and the applicable licenses. Use these weights with the [inference code](#inference) in this repository.
+
+## Installation
+
+Use Python 3.10 and a CUDA GPU with BF16 support. The base model is the
+**undistilled FLUX.2 [klein] base 9B** variant. Obtain access at
+[Black Forest Labs on Hugging Face](https://huggingface.co/black-forest-labs/FLUX.2-klein-base-9B)
+and follow its license terms before downloading it.
+
+```bash
+git clone https://github.com/longxiang-ai/TransNormal-2.git
+cd TransNormal-2
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+```
+
+If the base-model download requires authentication, run `hf auth login` with an
+account that has access. TransNormal-2 task weights are public and download
+without authentication. The complete base model requires substantially more
+disk space and GPU memory than the task-specific weights alone.
+
+## Inference
+
+Pass an image or a folder to `--input`. Folders are searched recursively.
+Replace the input paths below with your own images.
+
+```bash
+python inference.py --input path/to/image.jpg --output_dir outputs/normal --save_npy
+python inference.py --input path/to/transparent_image.jpg --domain transparent --output_dir outputs/glass --save_npy
+python inference.py --input path/to/images --output_dir outputs/batch --save_npy
+```
+
+The default `--weights` is `Longxiang-ai/TransNormal-2`. Both `--weights` and
+`--base_model` also accept local download directories. `--domain opaque` uses an
+RGB-guided anchor; `--domain transparent` uses the coarse normal prediction as
+the anchor. Select the domain for the image; this flag does not detect
+transparency automatically. GRM is enabled by default; use `--no_grm` only to
+inspect the coarse prediction without refinement.
+
+By default, inference uses BF16 at the input resolution, resized internally to
+multiples of 16 and restored to the original dimensions. To limit processing
+resolution, add `--process_res 768`. Add `--cpu_offload` to move the base-model
+components between CPU and GPU; this requires adequate host RAM and increases
+latency. BF16 is recommended; FP32 is available with `--dtype fp32`.
+
+The selected domain applies to the whole folder. Run ordinary and transparent
+scenes separately when they need different domain settings. Subdirectories are
+preserved in the output, so identical filenames in different folders remain
+separate.
+
+### Python API
+
+```python
+import torch
+from huggingface_hub import snapshot_download
+from transnormal2 import TransNormal2Pipeline, load_image, save_normal_map
+
+weights = snapshot_download(
+    "Longxiang-ai/TransNormal-2",
+    allow_patterns=["*.safetensors", "config.json"],
+    token=False,
+)
+pipe = TransNormal2Pipeline.from_pretrained_transnormal2(
+    weights_dir=weights,
+    torch_dtype=torch.bfloat16,
+    device="cuda",
+)
+normal = pipe(load_image("path/to/transparent_image.jpg"), domain_is_transparent=True)
+save_normal_map(normal, "normal.png", save_npy="normal.npy")
+```
+
+Outputs are PNG visualizations and, with `--save_npy`, float32 NumPy arrays of
+shape `(H, W, 3)` encoded in `[0, 1]`. Convert the encoding with `n = 2 * prediction - 1`
+and normalize the vectors when consuming them as unit normals after resizing.
+The PNG is a normal visualization, not a depth map.
+
+The method uses a single deterministic prediction step without sampling noise.
+Floating-point outputs can vary with hardware, dtype, and library versions.
+See `requirements.txt` for the tested package versions. Model weights retain
+the terms on their [Hugging Face model card](https://huggingface.co/Longxiang-ai/TransNormal-2).
 
 ## Qualitative Results
 
@@ -80,14 +172,17 @@ The general-scene table shows the four MAE metrics. The paper additionally repor
 
 ## Citation
 
-The arXiv identifier will be added when the preprint is available. In the meantime:
+If you find this work useful, please cite the [arXiv preprint](https://arxiv.org/abs/2609.06665):
 
 ```bibtex
 @misc{li2026transnormal2,
-  title  = {TransNormal-2: Geometry-Grounded Rectified Flow with Edge-Aware Decoding for Precise Normal Estimation},
-  author = {Li, Mingwei and Yang, Yi and Fan, Hehe},
-  year   = {2026},
-  url    = {https://longxiang-ai.github.io/TransNormal-2/}
+  title = {TransNormal-2: Geometry-Grounded Rectified Flow with Edge-Aware Decoding for Precise Normal Estimation},
+  author = {Mingwei Li and Yi Yang and Hehe Fan},
+  year = {2026},
+  eprint = {2609.06665},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.CV},
+  url = {https://arxiv.org/abs/2609.06665}
 }
 ```
 

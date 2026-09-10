@@ -6,12 +6,10 @@
   const sceneName = document.getElementById('scene-name');
   const sceneDetail = document.getElementById('scene-detail');
   const progress = document.querySelector('.hero-progress span');
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
   const connection = navigator.connection;
   const constrained = () => Boolean(connection && (connection.saveData || /(^|-)2g$/.test(connection.effectiveType) || connection.effectiveType === '3g' || (connection.downlink > 0 && connection.downlink < 3)));
-  let paused = reduced.matches || constrained();
+  let paused = false;
   let visible = true;
-  let loadingTimer;
   let playPending = false;
   let retryLightweight = false;
   let playAttempt = 0;
@@ -24,7 +22,6 @@
     icon.textContent = paused ? '▷' : 'Ⅱ';
   }
   function posterOnly() {
-    clearTimeout(loadingTimer);
     paused = true;
     playPending = false;
     playAttempt++;
@@ -36,14 +33,11 @@
     updateControls();
   }
   function watchLoading() {
-    clearTimeout(loadingTimer);
-    hero.dataset.videoState = 'poster';
-    loadingTimer = setTimeout(posterOnly, 8000);
+    if (hero.dataset.videoState !== 'playing') hero.dataset.videoState = 'loading';
   }
   function sync() {
     updateControls();
     if (paused || !visible || document.hidden || hero.dataset.scene !== 'film') {
-      clearTimeout(loadingTimer);
       playPending = false;
       playAttempt++;
       video.pause();
@@ -86,15 +80,9 @@
   }
   document.querySelectorAll('[data-background]').forEach(button => button.addEventListener('click', () => selectScene(button.dataset.background)));
   toggle.addEventListener('click', () => { paused = !paused; sync(); });
-  reduced.addEventListener('change', event => {
-    if (event.matches) posterOnly();
-    else { paused = constrained(); sync(); }
-  });
-  if (connection && connection.addEventListener) connection.addEventListener('change', () => { if (constrained()) posterOnly(); });
   document.addEventListener('visibilitychange', sync);
   new IntersectionObserver(entries => { visible = entries[0].isIntersecting; sync(); }, { threshold: .02 }).observe(hero);
   video.addEventListener('playing', () => {
-    clearTimeout(loadingTimer);
     if (paused || !visible || document.hidden || hero.dataset.scene !== 'film') { video.pause(); return; }
     hero.dataset.videoState = 'playing';
   });
